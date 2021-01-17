@@ -11,15 +11,6 @@ light.lookAt(0, 0, 0);
 game.scene.add(ambient);
 game.scene.add(light);
 
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const boxMaterial = new THREE.MeshLambertMaterial({ color: 0x00a412 });
-
-const boxAt = (x: number, y: number, z: number) => {
-  const box = new THREE.Mesh(boxGeometry, boxMaterial);
-  box.position.set(x, y, z);
-  game.scene.add(box);
-};
-
 const animate = () => {
   requestAnimationFrame(animate);
   render(game);
@@ -30,12 +21,25 @@ const animate = () => {
   }
 };
 
+// map generation
 const size = 32;
+const scale = 0.5;
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+boxGeometry.scale(scale, scale, scale);
+const boxMaterial = new THREE.MeshLambertMaterial({ color: 0x00a412 });
+
+const boxAt = (x: number, y: number, z: number) => {
+  const box = new THREE.Mesh(boxGeometry, boxMaterial);
+  box.position.set(x, y, z);
+  game.scene.add(box);
+};
 
 for (let x: number = -size / 2; x < size / 2; x++) {
   for (let z: number = -size / 2; z < size / 2; z++) {
-    const y = Math.round(Math.random());
-    boxAt(x, y, z);
+    const surface = Math.round(Math.random() * 2);
+    for (let y = 0; y <= surface; y++) {
+      boxAt(x * scale, y * scale, z * scale);
+    }
   }
 }
 
