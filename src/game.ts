@@ -30,8 +30,6 @@ const initCamera = (): Camera => {
     0.1,
     100
   );
-  camera.position.set(0, 7, 10);
-  camera.lookAt(0, 1, 0);
   return camera;
 };
 

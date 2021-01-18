@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { Game, initGame, render } from "./game";
+import { Voxels, generateVoxels, forEachVoxel } from "./voxels";
 
 const game: Game = initGame();
 
 // create light
 const ambient = new THREE.AmbientLight(0xffffff, 0.3);
 const light = new THREE.PointLight(0xffffff, 1, 500);
-light.position.set(5, 10, -5);
+light.position.set(50, 50, 30);
 light.lookAt(0, 0, 0);
 game.scene.add(ambient);
 game.scene.add(light);
@@ -21,26 +22,19 @@ const animate = () => {
   }
 };
 
-// map generation
-const size = 32;
-const scale = 0.5;
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-boxGeometry.scale(scale, scale, scale);
-const boxMaterial = new THREE.MeshLambertMaterial({ color: 0x00a412 });
-
-const boxAt = (x: number, y: number, z: number) => {
-  const box = new THREE.Mesh(boxGeometry, boxMaterial);
-  box.position.set(x, y, z);
+const makeBox = (position: THREE.Vector3, size: number) => {
+  const geometry = new THREE.BoxGeometry(size, size, size);
+  const material = new THREE.MeshLambertMaterial({ color: 0x00a412 });
+  const box = new THREE.Mesh(geometry, material);
+  box.position.set(position.x, position.y, position.z);
   game.scene.add(box);
 };
 
-for (let x: number = -size / 2; x < size / 2; x++) {
-  for (let z: number = -size / 2; z < size / 2; z++) {
-    const surface = Math.round(Math.random() * 2);
-    for (let y = 0; y <= surface; y++) {
-      boxAt(x * scale, y * scale, z * scale);
-    }
-  }
-}
+const size = 16;
+const voxels = generateVoxels(0, size);
+forEachVoxel(voxels, makeBox);
+
+game.camera.position.set(size / 2, size / 2, size * 1.5);
+game.camera.lookAt(size / 2, size / 2, size / 2);
 
 animate();
