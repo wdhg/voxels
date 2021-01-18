@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Game, initGame, render } from "./game";
-import { Voxels, generateVoxels, forEachVoxel } from "./voxels";
+import { generateVoxels, forEachVoxel } from "./voxels";
 
 const game: Game = initGame();
 
