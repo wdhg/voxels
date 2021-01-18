@@ -34,7 +34,7 @@ const size = 16;
 const voxels = generateVoxels(0, size);
 forEachVoxel(voxels, makeBox);
 
-game.camera.position.set(size / 2, size / 2, size * 1.5);
+game.camera.position.set(size / 2, size * 0.55, size * 1.5);
 game.camera.lookAt(size / 2, size / 2, size / 2);
 
 animate();
