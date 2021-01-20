@@ -79,13 +79,13 @@ export const generateVoxels = (_seed: number, size: number): Voxels => {
 };
 
 export const forEachVoxel = (
-  tree: Octree,
+  voxels: Voxels,
   f: (pos: Vector3, size: number) => any
 ) => {
-  if (isEnd(tree) && tree.value) {
-    console.log("voxel", tree.position, tree.size);
-    f(tree.position, tree.size);
-  } else if (isNode(tree)) {
-    tree.children.forEach((t, _i, _a) => forEachVoxel(t, f));
+  if (isEnd(voxels) && voxels.value) {
+    console.log("voxel", voxels.position, voxels.size);
+    f(voxels.position, voxels.size);
+  } else if (isNode(voxels)) {
+    voxels.children.forEach((t, _i, _a) => forEachVoxel(t, f));
   }
 };
