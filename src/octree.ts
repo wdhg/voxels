@@ -28,9 +28,7 @@ interface End {
   size: number;
 }
 
-type Octree = Node | End;
-
-export type Voxels = Octree;
+export type Octree = Node | End;
 
 const isNode = (tree: Octree): tree is Node => {
   return (tree as Node).tag === "node";
@@ -67,25 +65,21 @@ const randomNode = (position: Vector3, size: number): Node => {
   };
 };
 
-const randomOctree = (position: Vector3, size: number): Octree => {
+export const randomOctree = (position: Vector3, size: number): Octree => {
   if (size === 1 || Math.random() < 1 / size) {
     return randomEnd(position, size);
   }
   return randomNode(position, size);
 };
 
-export const generateVoxels = (_seed: number, size: number): Voxels => {
-  return randomOctree(new Vector3(0, 0, 0), size);
-};
-
 export const forEachVoxel = (
-  voxels: Voxels,
+  tree: Octree,
   f: (pos: Vector3, size: number) => any
 ) => {
-  if (isEnd(voxels) && voxels.value) {
-    console.log("voxel", voxels.position, voxels.size);
-    f(voxels.position, voxels.size);
-  } else if (isNode(voxels)) {
-    voxels.children.forEach((t, _i, _a) => forEachVoxel(t, f));
+  if (isEnd(tree) && tree.value) {
+    console.log("voxel", tree.position, tree.size);
+    f(tree.position, tree.size);
+  } else if (isNode(tree)) {
+    tree.children.forEach((t, _i, _a) => forEachVoxel(t, f));
   }
 };

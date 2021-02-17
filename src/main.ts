@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Game, initGame, render } from "./game";
-import { generateVoxels, forEachVoxel } from "./voxels";
+import { randomOctree, forEachVoxel } from "./octree";
 
 const game: Game = initGame();
 
@@ -31,7 +31,7 @@ const makeBox = (position: THREE.Vector3, size: number) => {
 };
 
 const size = 16;
-const voxels = generateVoxels(0, size);
+const voxels = randomOctree(new THREE.Vector3(0, 0, 0), size);
 forEachVoxel(voxels, makeBox);
 
 game.camera.position.set(size / 2, size * 0.55, size * 1.5);
