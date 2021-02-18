@@ -37,7 +37,7 @@ const randomNode = <T>(
   assignment: (x: number) => T
 ): Octree<T> => {
   const childSize = Math.floor(size / 2);
-  const children = Array.from(Array(8).keys()).map((v, _i, _a) =>
+  const children = Array.from(Array(8).keys()).map((_v, _i, _a) =>
     randomOctree(childSize, assignment)
   );
   return node(children);
