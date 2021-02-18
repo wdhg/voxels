@@ -12,50 +12,43 @@
        6-------------7                       z
 */
 
-interface Node {
+interface Node<T> {
   tag: "node";
-  children: Octree[];
+  children: Octree<T>[];
 }
 
-interface End {
+interface End<T> {
   tag: "end";
+  value: T;
 }
 
-interface Empty {
-  tag: "empty";
-}
+export type Octree<T> = Node<T> | End<T>;
 
-export type Octree = Node | End | Empty;
-
-const node = (children: Octree[]): Octree => {
-  return {
-    tag: "node",
-    children: children,
-  };
+const node = <T>(children: Octree<T>[]): Octree<T> => {
+  return { tag: "node", children: children };
 };
 
-const end = (): Octree => {
-  return { tag: "end" };
+const end = <T>(value: T): Octree<T> => {
+  return { tag: "end", value: value };
 };
 
-const empty = (): Octree => {
-  return { tag: "empty" };
-};
-
-const randomNode = (size: number): Octree => {
+const randomNode = <T>(
+  size: number,
+  assignment: (x: number) => T
+): Octree<T> => {
   const childSize = Math.floor(size / 2);
   const children = Array.from(Array(8).keys()).map((v, _i, _a) =>
-    randomOctree(childSize)
+    randomOctree(childSize, assignment)
   );
   return node(children);
 };
 
-export const randomOctree = (size: number): Octree => {
+export const randomOctree = <T>(
+  size: number,
+  assignment: (x: number) => T
+): Octree<T> => {
   if (size === 1) {
-    if (Math.random() < 0.5) {
-      return end();
-    }
-    return empty();
+    return end(assignment(Math.random()));
   }
-  return randomNode(size);
+  return randomNode(size, assignment);
 };
